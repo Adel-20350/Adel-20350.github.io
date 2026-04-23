@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Kalkulator</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #dbeafe; /* biru pastel */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  background: #bfdbfe; /* biru pastel lebih tua */
+  padding: 20px;
+  border-radius: 20px;
+  width: 300px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  color: #1e3a8a;
+}
+
+/* DISPLAY */
+.display {
+  background: #eff6ff; /* biru soft */
+  border-radius: 10px;
+  padding: 10px;
+  margin: 15px 0;
+}
+
+#input {
+  text-align: right;
+  font-size: 20px;
+  color: #1e3a8a;
+}
+
+#result {
+  text-align: right;
+  font-size: 26px;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+/* GRID */
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+button {
+  height: 55px;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+/* WARNA */
+.number { 
+  background: #e0f2fe; 
+}
+
+.operator { 
+  background: #93c5fd; 
+  color: white;
+}
+
+.clear { 
+  background: #fca5a5; /* merah pastel */
+  color: white; 
+  grid-column: span 2; 
+}
+
+.delete { 
+  background: #60a5fa; 
+  color: white; 
+  grid-column: span 2; 
+}
+
+.equal { 
+  background: #52b7ff; /* hijau pastel */
+  color: #0b68ff; 
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Kalkulator</h2>
+
+  <div class="display">
+    <div id="input">0</div>
+    <div id="result"></div>
+  </div>
+
+  <div class="buttons">
+    <!-- atas -->
+    <button class="clear" onclick="clearAll()">CLEAR</button>
+    <button class="delete" onclick="deleteLast()">DELETE</button>
+
+    <!-- baris 1 -->
+    <button class="number" onclick="append('7')">7</button>
+    <button class="number" onclick="append('8')">8</button>
+    <button class="number" onclick="append('9')">9</button>
+    <button class="operator" onclick="appendOperator('/')">÷</button>
+
+    <!-- baris 2 -->
+    <button class="number" onclick="append('4')">4</button>
+    <button class="number" onclick="append('5')">5</button>
+    <button class="number" onclick="append('6')">6</button>
+    <button class="operator" onclick="appendOperator('*')">×</button>
+
+    <!-- baris 3 -->
+    <button class="number" onclick="append('1')">1</button>
+    <button class="number" onclick="append('2')">2</button>
+    <button class="number" onclick="append('3')">3</button>
+    <button class="operator" onclick="appendOperator('-')">−</button>
+
+    <!-- baris 4 -->
+    <button class="number" onclick="append('0')">0</button>
+    <button class="number" onclick="append('.')">.</button>
+    <button class="equal" onclick="calculate()">=</button>
+    <button class="operator" onclick="appendOperator('+')">+</button>
+  </div>
+</div>
+
+<script>
+let expression = "";
+
+function updateDisplay() {
+  document.getElementById("input").innerText = expression || "0";
+}
+
+function append(val) {
+  expression += val;
+  updateDisplay();
+}
+
+function appendOperator(op) {
+  if (expression === "") return;
+
+  let last = expression.slice(-1);
+  if (["+", "-", "*", "/"].includes(last)) {
+    expression = expression.slice(0, -1);
+  }
+
+  expression += op;
+  updateDisplay();
+}
+
+function clearAll() {
+  expression = "";
+  document.getElementById("result").innerText = "";
+  updateDisplay();
+}
+
+function deleteLast() {
+  expression = expression.slice(0, -1);
+  updateDisplay();
+}
+
+function calculate() {
+  try {
+    let result = eval(expression);
+
+    if (!isFinite(result)) throw "Error";
+
+    document.getElementById("result").innerText = "= " + result;
+
+  } catch (e) {
+    document.getElementById("result").innerText = "Error";
+  }
+}
+</script>
+
+</body>
+</html>
